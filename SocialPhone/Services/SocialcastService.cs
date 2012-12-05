@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Runtime.Serialization;
+﻿using System.Net;
 using System.Threading.Tasks;
+using SocialPhone.Models.Socialcast;
 using SocialPhone.Rest;
 
 namespace SocialPhone.Services
@@ -37,56 +35,5 @@ namespace SocialPhone.Services
 
             return !result.HasError();
         }
-    }
-
-    public class SocialCastResult
-    {
-        public Message message { get; set; }
-        public List<Message> messages { get; set; }
-        public List<Stream> streams { get; set; }
-    }
-
-    [DataContract]
-    public class Stream
-    {
-        [DataMember(Name = "id")]
-        public int Id { get; set; }
-
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        [DataMember(Name = "default")]
-        public bool Default { get; set; }
-    }
-
-    public class Message
-    {
-        public int id { get; set; }
-        public int likes_count { get; set; }
-        public int comments_count { get; set; }
-        public string title { get; set; }
-        public string body { get; set; }
-        public string text { get; set; }
-        public List<User> groups { get; set; }
-        public List<User> recipients { get; set; }
-        public List<Message> comments { get; set; }
-        public User user { get; set; }
-
-        public DateTime created_at { get; set; }
-    }
-
-    public class User
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public Avatars avatars { get; set; }
-    }
-
-    public class Avatars
-    {
-        public string square70 { get; set; }
-        public string square45 { get; set; }
-        public string square30 { get; set; }
-        public string square140 { get; set; }
     }
 }

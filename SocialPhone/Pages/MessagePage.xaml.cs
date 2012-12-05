@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Navigation;
 using SocialPhone.ViewModels;
 using System.Threading.Tasks;
+using SocialPhone.ViewModels.Socialcast;
 
 namespace SocialPhone.Pages
 {
@@ -32,7 +33,7 @@ namespace SocialPhone.Pages
 
             var result = await Service.Socialcast.GetMessageAsync(model.MessageId);
 
-            model.Messages.Add(new ScMessage
+            model.Messages.Add(new Message
             {
                 Id = result.Value.message.id,
                 Body = result.Value.message.body,
@@ -44,7 +45,7 @@ namespace SocialPhone.Pages
 
             foreach (var comment in result.Value.message.comments)
             {
-                model.Messages.Add(new ScMessage
+                model.Messages.Add(new Message
                 {
                     Id = comment.id,
                     Body = comment.text,

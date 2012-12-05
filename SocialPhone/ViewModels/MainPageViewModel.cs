@@ -1,21 +1,20 @@
 ﻿using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
-using SocialPhone.Pages;
-using SocialPhone.Services;
+using SocialPhone.ViewModels.Socialcast;
+using Stream = SocialPhone.Models.Socialcast.Stream;
 
 namespace SocialPhone.ViewModels
 {
     public class MainPageViewModel : BindingBase
     {
         public int CurrentPage { get; set; }
-        public ObservableCollection<ScMessage> Messages { get; set; }
-        public ObservableCollection<SocialPhone.Services.Stream> Streams { get; set; }
+        public ObservableCollection<Message> Messages { get; set; }
+        public ObservableCollection<Stream> Streams { get; set; }
 
         public MainPageViewModel()
         {
-            Messages = new ObservableCollection<ScMessage>();
-            Streams = new ObservableCollection<SocialPhone.Services.Stream>();
+            Messages = new ObservableCollection<Message>();
+            Streams = new ObservableCollection<Stream>();
             StreamSelectorVisibility = Visibility.Collapsed;
             CurrentPage = 1;
         }

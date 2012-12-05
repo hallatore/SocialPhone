@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using Microsoft.Phone.Controls;
 using System.Threading.Tasks;
-using SocialPhone.Services;
+using SocialPhone.Models.Socialcast;
 using SocialPhone.UserControls;
 using SocialPhone.ViewModels;
+using Message = SocialPhone.ViewModels.Socialcast.Message;
 
 namespace SocialPhone.Pages
 {
@@ -115,22 +114,23 @@ namespace SocialPhone.Pages
 
             if (result.HasError())
             {
+                MessageBox.Show("Failed to load stream");
                 model.CurrentPage--;
             }
             else
             {
                 foreach (var message in result.Value.messages)
                 {
-                    model.Messages.Add(new ScMessage
-                        {
-                            Id = message.id,
-                            Body = message.body.CutEnd(400),
-                            Title = message.user.name + (message.groups.Count > 0 ? " > " + string.Join(", ", message.groups.Select(g => g.name)) : string.Empty),
-                            Likes = message.likes_count,
-                            Comments = message.comments_count,
-                            Status = message.created_at.ToRelativeDate(),
-                            UserAvatarUrl = message.user.avatars.square140
-                        });
+                    model.Messages.Add(new Message
+                    {
+                        Id = message.id,
+                        Body = message.body.CutEnd(400),
+                        Title = message.user.name + (message.groups.Count > 0 ? " > " + string.Join(", ", message.groups.Select(g => g.name)) : string.Empty),
+                        Likes = message.likes_count,
+                        Comments = message.comments_count,
+                        Status = message.created_at.ToRelativeDate(),
+                        UserAvatarUrl = message.user.avatars.square140
+                    });
                 }
             }
 
@@ -141,7 +141,7 @@ namespace SocialPhone.Pages
 
         private void LoadMoreMessages_Link(object sender, LinkUnlinkEventArgs e)
         {
-            var message = e.ContentPresenter.Content as ScMessage;
+            var message = e.ContentPresenter.Content as Message;
             var index = model.Messages.IndexOf(message);
 
             if (index + 1 == model.Messages.Count)
@@ -155,7 +155,7 @@ namespace SocialPhone.Pages
 
         private void StreamClicked(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            var stream = ((LongListSelector)sender).SelectedItem as Services.Stream;
+            var stream = ((LongListSelector)sender).SelectedItem as Stream;
             LoadStream(stream);
         }
 
@@ -184,19 +184,8 @@ namespace SocialPhone.Pages
 
         private void MessageClick(object sender, RoutedEventArgs e)
         {
-            var message = ((FrameworkElement)sender).DataContext as ScMessage;
+            var message = ((FrameworkElement)sender).DataContext as Message;
             NavigationService.Navigate(new Uri("/Pages/MessagePage.xaml?id=" + message.Id, UriKind.Relative));
         }
-    }
-
-    public class ScMessage
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Status { get; set; }
-        public string Body { get; set; }
-        public int Comments { get; set; }
-        public int Likes { get; set; }
-        public string UserAvatarUrl { get; set; }
     }
 }
