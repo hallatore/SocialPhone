@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.Net;
+using System.Windows;
 using Microsoft.Phone.Controls;
+using SocialPhone.Models.Socialcast;
 using SocialPhone.ViewModels.Socialcast;
+using Message = SocialPhone.ViewModels.Socialcast.Message;
 
 namespace SocialPhone.Helpers
 {
@@ -12,54 +15,64 @@ namespace SocialPhone.Helpers
 
             if (!message.Likeable)
                 item.IsEnabled = false;
-            else if (message.Type == MessageType.Message && message.LikedByMe == null)
+            else if (message.LikedByMe == null)
             {
-                item.Click += LikeMessageClick;
+                item.Click += LikeClick;
                 item.Header = "like";
             }
-            else if (message.Type == MessageType.Message && message.LikedByMe != null)
+            else if (message.LikedByMe != null)
             {
-                item.Click += UnLikeMessageClick;
-                item.Header = "remove like";
-            }
-            else if (message.Type == MessageType.Comment && message.LikedByMe == null)
-            {
-                item.Click += LikeCommentClick;
-                item.Header = "like";
-            }
-            else if (message.Type == MessageType.Comment && message.LikedByMe != null)
-            {
-                item.Click += UnLikeCommentClick;
-                item.Header = "remove like";
+                item.Click += UnlikeClick;
+                item.Header = "unlike";
             }
         }
 
-        private static async void LikeMessageClick(object sender, RoutedEventArgs e)
+        private static async void LikeClick(object sender, RoutedEventArgs e)
         {
-            var message = (Message)((FrameworkElement)sender).DataContext;
-            await Services.Service.Current.Socialcast.LikeMessageAsync(message.Id);
-            message.Likes++;
+            var currentPage = (Pages.PageBase)((App)Application.Current).RootFrame.Content;
+            currentPage.Progress.IsIndeterminate = true;
+            var item = (MenuItem)sender;
+            var message = (Message)item.DataContext;
+
+            try
+            {
+                SocialCastResult result;
+
+                if (message.Type == MessageType.Message)
+                    result = await Services.Service.Current.Socialcast.LikeMessageAsync(message.Id);
+                else
+                    result = await Services.Service.Current.Socialcast.LikeCommentAsync(message.ParentId, message.Id);
+
+                message.LikedByMe = result.like;
+                message.Likes++;
+            }
+            catch(WebException ex) {}
+
+            item.Click -= LikeClick;
+            currentPage.Progress.IsIndeterminate = false;
         }
 
-        private static async void UnLikeMessageClick(object sender, RoutedEventArgs e)
+        private static async void UnlikeClick(object sender, RoutedEventArgs e)
         {
-            var message = (Message)((FrameworkElement)sender).DataContext;
-            await Services.Service.Current.Socialcast.UnLikeMessageAsync(message.Id, message.LikedByMe.id);
-            message.Likes--;
-        }
+            var currentPage = (Pages.PageBase)((App)Application.Current).RootFrame.Content;
+            currentPage.Progress.IsIndeterminate = true;
+            var item = (MenuItem)sender;
+            var message = (Message)item.DataContext;
+            
+            try
+            {
+                if (message.Type == MessageType.Message)
+                    await Services.Service.Current.Socialcast.UnLikeMessageAsync(message.Id, message.LikedByMe.id);
+                else
+                    await Services.Service.Current.Socialcast.UnLikeCommentAsync(message.ParentId, message.Id, message.LikedByMe.id);
 
-        private static async void LikeCommentClick(object sender, RoutedEventArgs e)
-        {
-            var message = (Message)((FrameworkElement)sender).DataContext;
-            await Services.Service.Current.Socialcast.LikeCommentAsync(message.Id);
-            message.Likes++;
-        }
+                message.LikedByMe = null;
+                message.Likes--;
+            }
+            catch (WebException ex) { }
 
-        private static async void UnLikeCommentClick(object sender, RoutedEventArgs e)
-        {
-            var message = (Message)((FrameworkElement)sender).DataContext;
-            await Services.Service.Current.Socialcast.UnLikeCommentAsync(message.Id, message.LikedByMe.id);
-            message.Likes--;
+            item.Click -= UnlikeClick;
+            currentPage.Progress.IsIndeterminate = false;
         }
     }
 }

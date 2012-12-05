@@ -52,6 +52,7 @@ namespace SocialPhone.Pages
                 model.Messages.Add(new Message
                 {
                     Id = comment.id,
+                    ParentId = result.Value.message.id,
                     Body = comment.text,
                     Title = comment.user.name,
                     Likes = comment.likes_count,

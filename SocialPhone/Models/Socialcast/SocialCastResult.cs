@@ -6,6 +6,7 @@ namespace SocialPhone.Models.Socialcast
     {
         public Message message { get; set; }
         public User user { get; set; }
+        public Like like { get; set; }
         public List<Message> messages { get; set; }
         public List<Stream> streams { get; set; }
     }

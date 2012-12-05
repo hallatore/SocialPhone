@@ -36,11 +36,26 @@ namespace SocialPhone.Rest
             }
         }
 
-        public Task PostAsync(string url, NetworkCredential credentials = null, string data = null, string method = "POST")
+        public Task PostAsync(string url, NetworkCredential credentials = null, string data = "", string method = "POST")
         {
             var client = new WebClient();
             client.Credentials = credentials;
             return client.UploadStringTaskAsync(url, method, data);
+        }
+
+        public async Task<T> PostAsync<T>(string url, NetworkCredential credentials = null, string data = "", string method = "POST")
+        {
+            var client = new WebClient();
+            client.Credentials = credentials;
+            var result = await client.UploadStringTaskAsync(url, method, data);
+
+            var ms = new MemoryStream();
+            var sw = new StreamWriter(ms);
+            sw.Write(result);
+            sw.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+
+            return ReadObject<T>(ms);
         }
 
         private static string AppendAntiCacheToken(string url)

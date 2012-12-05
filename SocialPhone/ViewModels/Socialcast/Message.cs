@@ -21,6 +21,8 @@ namespace SocialPhone.ViewModels.Socialcast
         public bool Likeable { get; set; }
         public Like LikedByMe { get; set; }
 
+        public int ParentId { get; set; }
+
         private int likes;
 
         public int Likes
