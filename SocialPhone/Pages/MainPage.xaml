@@ -24,8 +24,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,24">
-            <TextBlock x:Name="PageTitle" Text="{Binding CurrentStreamName}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,10,0,24">
+            <TextBlock x:Name="PageTitle" Text="{Binding CurrentStreamName}" Margin="9,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1">
@@ -84,7 +84,10 @@
     </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Default">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton IconUri="/Images/edit.png" Text="new post" Click="NewPostClick"/>
+            </shell:ApplicationBar.Buttons>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="update" Click="UpdateStreamClick"/>
                 <shell:ApplicationBarMenuItem Text="switch stream" Click="ShowStreamsClick"/>

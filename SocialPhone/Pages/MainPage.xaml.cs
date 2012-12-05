@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Phone.Controls;
 using System.Threading.Tasks;
 using SocialPhone.Models.Socialcast;
@@ -183,6 +184,11 @@ namespace SocialPhone.Pages
                 model.StreamSelectorVisibility = Visibility.Collapsed;
                 e.Cancel = true;
             }
+            else if (messageControl != null)
+            {
+                RemoveMessageControl();
+                e.Cancel = true;
+            }
         }
 
         private void MessageClick(object sender, RoutedEventArgs e)
@@ -194,6 +200,31 @@ namespace SocialPhone.Pages
         private void LikeMenuItemLoaded(object sender, RoutedEventArgs e)
         {
             Helpers.LikeHelper.AttachClickEvent((MenuItem)sender);
+        }
+
+
+        private MessageControl messageControl;
+
+        private void NewPostClick(object sender, EventArgs e)
+        {
+            messageControl = new MessageControl();
+            messageControl.OnButtonClick += messageControl_OnButtonClick;
+            messageControl.SetValue(Grid.RowSpanProperty, 2);
+            LayoutRoot.Children.Add(messageControl);
+            ApplicationBar.IsVisible = false;
+        }
+
+        private void messageControl_OnButtonClick(object sender, TextEventArgs e)
+        {
+            RemoveMessageControl();
+        }
+
+        private void RemoveMessageControl()
+        {
+            LayoutRoot.Children.Remove(messageControl);
+            messageControl.OnButtonClick += messageControl_OnButtonClick;
+            messageControl = null;
+            ApplicationBar.IsVisible = true;
         }
     }
 }
