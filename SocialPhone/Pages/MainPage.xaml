@@ -33,6 +33,11 @@
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
                         <Button Click="MessageClick" Style="{StaticResource TransparentButtonStyle}">
+                            <toolkit:ContextMenuService.ContextMenu>
+                                <toolkit:ContextMenu>
+                                    <toolkit:MenuItem Header="like" Loaded="LikeMenuItemLoaded"/>
+                                </toolkit:ContextMenu>
+                            </toolkit:ContextMenuService.ContextMenu>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>

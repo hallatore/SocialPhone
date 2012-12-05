@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Navigation;
+using Microsoft.Phone.Controls;
 using SocialPhone.ViewModels;
 using System.Threading.Tasks;
 using SocialPhone.ViewModels.Socialcast;
@@ -40,7 +42,9 @@ namespace SocialPhone.Pages
                 Title = result.Value.message.user.name + (result.Value.message.groups.Count > 0 ? " > " + string.Join(", ", result.Value.message.groups.Select(g => g.name)) : string.Empty),
                 Likes = result.Value.message.likes_count,
                 Status = result.Value.message.created_at.ToRelativeDate(),
-                UserAvatarUrl = result.Value.message.user.avatars.square140
+                UserAvatarUrl = result.Value.message.user.avatars.square140,
+                Likeable = result.Value.message.likable,
+                LikedByMe = result.Value.message.likes.SingleOrDefault(l => l.user.id == Service.Settings.AuthUser.Id)
             });
 
             foreach (var comment in result.Value.message.comments)
@@ -53,11 +57,18 @@ namespace SocialPhone.Pages
                     Likes = comment.likes_count,
                     Status = comment.created_at.ToRelativeDate(),
                     UserAvatarUrl = comment.user.avatars.square140,
-                    Type = MessageType.Comment
+                    Type = MessageType.Comment,
+                    Likeable = comment.likable,
+                    LikedByMe = comment.likes.SingleOrDefault(l => l.user.id == Service.Settings.AuthUser.Id)
                 });
             }
 
             Progress.IsIndeterminate = false;
+        }
+
+        private void LikeMenuItemLoaded(object sender, RoutedEventArgs e)
+        {
+            Helpers.LikeHelper.AttachClickEvent((MenuItem)sender);
         }
     }
 }

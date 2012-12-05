@@ -129,7 +129,9 @@ namespace SocialPhone.Pages
                         Likes = message.likes_count,
                         Comments = message.comments_count,
                         Status = message.created_at.ToRelativeDate(),
-                        UserAvatarUrl = message.user.avatars.square140
+                        UserAvatarUrl = message.user.avatars.square140,
+                        Likeable = message.likable,
+                        LikedByMe = message.likes.SingleOrDefault(l => l.user.id == Service.Settings.AuthUser.Id)
                     });
                 }
             }
@@ -141,7 +143,7 @@ namespace SocialPhone.Pages
 
         private void LoadMoreMessages_Link(object sender, LinkUnlinkEventArgs e)
         {
-            var message = e.ContentPresenter.Content as Message;
+            var message = (Message)e.ContentPresenter.Content;
             var index = model.Messages.IndexOf(message);
 
             if (index + 1 == model.Messages.Count)
@@ -155,7 +157,7 @@ namespace SocialPhone.Pages
 
         private void StreamClicked(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            var stream = ((LongListSelector)sender).SelectedItem as Stream;
+            var stream = (Stream)((LongListSelector)sender).SelectedItem;
             LoadStream(stream);
         }
 
@@ -184,8 +186,13 @@ namespace SocialPhone.Pages
 
         private void MessageClick(object sender, RoutedEventArgs e)
         {
-            var message = ((FrameworkElement)sender).DataContext as Message;
+            var message = (Message)((FrameworkElement)sender).DataContext;
             NavigationService.Navigate(new Uri("/Pages/MessagePage.xaml?id=" + message.Id, UriKind.Relative));
+        }
+
+        private void LikeMenuItemLoaded(object sender, RoutedEventArgs e)
+        {
+            Helpers.LikeHelper.AttachClickEvent((MenuItem)sender);
         }
     }
 }

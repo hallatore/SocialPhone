@@ -87,6 +87,7 @@
     </Compile>
     <Compile Include="BindingBase.cs" />
     <Compile Include="Converters\CountOpacityConverter.cs" />
+    <Compile Include="Helpers\LikeHelper.cs" />
     <Compile Include="Models\Socialcast\Like.cs" />
     <Compile Include="Pages\MessagePage.xaml.cs">
       <DependentUpon>MessagePage.xaml</DependentUpon>

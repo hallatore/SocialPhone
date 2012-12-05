@@ -17,7 +17,7 @@ namespace SocialPhone.Rest
                 client.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
 
                 var query = cacheResult ? url : AppendAntiCacheToken(url);
-                var result = await client.GetStreamAsync(new Uri(query));
+                var result = await client.OpenReadTaskAsync(new Uri(query));
 
                 if (client.ResponseHeaders[HttpRequestHeader.ContentEncoding] == "gzip")
                 {
@@ -34,6 +34,13 @@ namespace SocialPhone.Rest
 
                 return new Result<T>(ex);
             }
+        }
+
+        public Task PostAsync(string url, NetworkCredential credentials = null, string data = null, string method = "POST")
+        {
+            var client = new WebClient();
+            client.Credentials = credentials;
+            return client.UploadStringTaskAsync(url, method, data);
         }
 
         private static string AppendAntiCacheToken(string url)
