@@ -14,8 +14,11 @@ namespace SocialPhone.Models.Socialcast
         public List<User> groups { get; set; }
         public List<User> recipients { get; set; }
         public List<Message> comments { get; set; }
+        public List<Like> likes { get; set; }
         public User user { get; set; }
-
         public DateTime created_at { get; set; }
+        public bool editable { get; set; }
+        public bool deletable { get; set; }
+        public bool likable { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace SocialPhone.Pages
                 model = new MainPageViewModel();
                 DataContext = model;
 
-                if (string.IsNullOrWhiteSpace(Service.Settings.Username))
+                if (Service.Settings.AuthUser == null)
                 {
                     ShowLogin();
                 }

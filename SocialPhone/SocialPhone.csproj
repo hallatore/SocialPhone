@@ -87,6 +87,7 @@
     </Compile>
     <Compile Include="BindingBase.cs" />
     <Compile Include="Converters\CountOpacityConverter.cs" />
+    <Compile Include="Models\Socialcast\Like.cs" />
     <Compile Include="Pages\MessagePage.xaml.cs">
       <DependentUpon>MessagePage.xaml</DependentUpon>
     </Compile>
@@ -95,6 +96,7 @@
     <Compile Include="Models\Socialcast\Message.cs" />
     <Compile Include="Models\Socialcast\SocialCastResult.cs" />
     <Compile Include="Models\Socialcast\User.cs" />
+    <Compile Include="Services\AuthUser.cs" />
     <Compile Include="ViewModels\Socialcast\Message.cs" />
     <Compile Include="Rest\Result.cs" />
     <Compile Include="Extensions.cs" />

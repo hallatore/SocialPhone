@@ -1,5 +1,11 @@
 namespace SocialPhone.ViewModels.Socialcast
 {
+    public enum MessageType
+    {
+        Message,
+        Comment
+    }
+
     public class Message
     {
         public int Id { get; set; }
@@ -9,5 +15,6 @@ namespace SocialPhone.ViewModels.Socialcast
         public int Comments { get; set; }
         public int Likes { get; set; }
         public string UserAvatarUrl { get; set; }
+        public MessageType Type { get; set; }
     }
 }

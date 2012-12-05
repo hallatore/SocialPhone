@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using SocialPhone.Services;
 
 namespace SocialPhone.UserControls
 {
@@ -33,17 +34,28 @@ namespace SocialPhone.UserControls
 
             if (success)
             {
-                service.Settings.SocialcastUrl = url;
-                service.Settings.Username = username;
-                service.Settings.Password = password;
+                service.Settings.AuthUser = new AuthUser
+                {
+                    ServiceUrl = url,
+                    Email = username,
+                    Password = password
+                };
 
-                if (OnLoginSuccess != null)
-                    OnLoginSuccess.Invoke(this, new EventArgs());
+                var userInfo = await service.Socialcast.GetUserInfo();
+
+                if (!userInfo.HasError())
+                {
+                    service.Settings.AuthUser.Id = userInfo.Value.user.id;
+
+                    if (OnLoginSuccess != null)
+                        OnLoginSuccess.Invoke(this, new EventArgs());
+
+                    return;
+                }
             }
-            else
-            {
-                MessageBox.Show("Authentication failed");
-            }
+
+            service.Settings.AuthUser = null;
+            MessageBox.Show("Authentication failed");
         }
     }
 }

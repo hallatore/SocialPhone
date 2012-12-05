@@ -52,7 +52,8 @@ namespace SocialPhone.Pages
                     Title = comment.user.name,
                     Likes = comment.likes_count,
                     Status = comment.created_at.ToRelativeDate(),
-                    UserAvatarUrl = comment.user.avatars.square140
+                    UserAvatarUrl = comment.user.avatars.square140,
+                    Type = MessageType.Comment
                 });
             }
 
