@@ -39,7 +39,8 @@ namespace SocialPhone.Pages
             {
                 Id = result.Value.message.id,
                 Body = result.Value.message.body,
-                Title = result.Value.message.user.name + (result.Value.message.groups.Count > 0 ? " > " + string.Join(", ", result.Value.message.groups.Select(g => g.name)) : string.Empty),
+                Header = result.Value.message.user.name + (result.Value.message.groups.Count > 0 ? " > " + string.Join(", ", result.Value.message.groups.Select(g => g.name)) : string.Empty),
+                Title = result.Value.message.title,
                 Likes = result.Value.message.likes_count,
                 Status = result.Value.message.created_at.ToRelativeDate(),
                 UserAvatarUrl = result.Value.message.user.avatars.square140,

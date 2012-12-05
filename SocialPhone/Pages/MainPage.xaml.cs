@@ -125,7 +125,8 @@ namespace SocialPhone.Pages
                     {
                         Id = message.id,
                         Body = message.body.CutEnd(400),
-                        Title = message.user.name + (message.groups.Count > 0 ? " > " + string.Join(", ", message.groups.Select(g => g.name)) : string.Empty),
+                        Header = message.user.name + (message.groups.Count > 0 ? " > " + string.Join(", ", message.groups.Select(g => g.name)) : string.Empty),
+                        Title = message.title,
                         Likes = message.likes_count,
                         Comments = message.comments_count,
                         Status = message.created_at.ToRelativeDate(),
