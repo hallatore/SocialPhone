@@ -19,7 +19,7 @@
     </Pages:PageBase.Resources>
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <toolkit:LongListSelector IsFlatList="True" ItemsSource="{Binding Messages}" toolkit:TiltEffect.SuppressTilt="True">
+        <toolkit:LongListSelector IsFlatList="True" ItemsSource="{Binding Messages}" Margin="0,17,0,0">
             <toolkit:LongListSelector.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -38,8 +38,8 @@
                             <TextBlock Text="{Binding Body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
 
                             <StackPanel Orientation="Horizontal" Margin="12,8,0,0">
-                                <StackPanel Orientation="Horizontal" Margin="0,0,24,0" Opacity="{Binding Likes, Converter={StaticResource CountOpacityConverter}}">
-                                    <Image Source="/Images/likes.white.png" Height="20" />
+                                <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
+                                    <Image Source="/Images/likes.white.png" Height="20" Opacity="{Binding Likes, Converter={StaticResource CountOpacityConverter}}" />
                                     <TextBlock Text="{Binding Likes}" Style="{StaticResource PhoneTextSmallStyle}" Margin="6,0,0,0"/>
                                 </StackPanel>
                                 
