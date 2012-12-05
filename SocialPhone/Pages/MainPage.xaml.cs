@@ -123,11 +123,12 @@ namespace SocialPhone.Pages
                 {
                     model.Messages.Add(new ScMessage
                         {
+                            Id = message.id,
                             Body = message.body.CutEnd(400),
                             Title = message.user.name + (message.groups.Count > 0 ? " > " + string.Join(", ", message.groups.Select(g => g.name)) : string.Empty),
                             Likes = message.likes_count,
                             Comments = message.comments_count,
-                            Status = message.created_at.ToString("dd.MM kl HH:mm"),
+                            Status = message.created_at.ToRelativeDate(),
                             UserAvatarUrl = message.user.avatars.square140
                         });
                 }
@@ -150,12 +151,6 @@ namespace SocialPhone.Pages
         private void UpdateStreamClick(object sender, EventArgs e)
         {
             LoadMessages(true);
-        }
-
-        private void MessageClicked(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            var message = ((LongListSelector)sender).SelectedItem as ScMessage;
-            // TODO Navigate ...
         }
 
         private void StreamClicked(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -186,10 +181,17 @@ namespace SocialPhone.Pages
                 e.Cancel = true;
             }
         }
+
+        private void MessageClick(object sender, RoutedEventArgs e)
+        {
+            var message = ((FrameworkElement)sender).DataContext as ScMessage;
+            NavigationService.Navigate(new Uri("/Pages/MessagePage.xaml?id=" + message.Id, UriKind.Relative));
+        }
     }
 
     public class ScMessage
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Status { get; set; }
         public string Body { get; set; }

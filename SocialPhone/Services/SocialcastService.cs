@@ -9,11 +9,18 @@ namespace SocialPhone.Services
 {
     public class Socialcast
     {
-        public Task<Result<SocialCastResult>> GetMessagesAsync(int messageId, int perPage = 10, int page = 1)
+        public Task<Result<SocialCastResult>> GetMessagesAsync(int streamId, int perPage = 10, int page = 1)
         {
             var settings = Service.Current.Settings;
             var nc = new NetworkCredential(settings.Username, settings.Password);
-            return new Rest.Service().GetAsync<SocialCastResult>(string.Format("{0}/api/streams/{1}/messages.json?per_page={2}&page={3}&comments_limit=0", settings.SocialcastUrl, messageId, perPage, page), nc);
+            return new Rest.Service().GetAsync<SocialCastResult>(string.Format("{0}/api/streams/{1}/messages.json?per_page={2}&page={3}&comments_limit=0", settings.SocialcastUrl, streamId, perPage, page), nc);
+        }
+
+        public Task<Result<SocialCastResult>> GetMessageAsync(int messageId)
+        {
+            var settings = Service.Current.Settings;
+            var nc = new NetworkCredential(settings.Username, settings.Password);
+            return new Rest.Service().GetAsync<SocialCastResult>(string.Format("{0}/api/messages/{1}.json", settings.SocialcastUrl, messageId), nc);
         }
 
         public Task<Result<SocialCastResult>> GetStreamsAsync()
@@ -34,6 +41,7 @@ namespace SocialPhone.Services
 
     public class SocialCastResult
     {
+        public Message message { get; set; }
         public List<Message> messages { get; set; }
         public List<Stream> streams { get; set; }
     }
@@ -58,8 +66,10 @@ namespace SocialPhone.Services
         public int comments_count { get; set; }
         public string title { get; set; }
         public string body { get; set; }
+        public string text { get; set; }
         public List<User> groups { get; set; }
         public List<User> recipients { get; set; }
+        public List<Message> comments { get; set; }
         public User user { get; set; }
 
         public DateTime created_at { get; set; }

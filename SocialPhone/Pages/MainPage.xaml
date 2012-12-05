@@ -12,7 +12,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
     <Pages:PageBase.Resources>
         <Converters:CountOpacityConverter x:Key="CountOpacityConverter" />
@@ -29,33 +29,36 @@
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1">
-            <toolkit:LongListSelector Link="LoadMoreMessages_Link" IsFlatList="True" ItemsSource="{Binding Messages}" SelectionChanged="MessageClicked" >
+            <toolkit:LongListSelector Link="LoadMoreMessages_Link" IsFlatList="True" ItemsSource="{Binding Messages}">
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="{Binding UserAvatarUrl}" Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,8,0,0" />
-                            <StackPanel Grid.Column="1" Margin="0,0,12,48">
-                                <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap" Foreground="{StaticResource PhoneAccentBrush}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding Body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+                        <Button Click="MessageClick" Style="{StaticResource TransparentButtonStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding UserAvatarUrl}" Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,8,0,0" />
+                                <StackPanel Grid.Column="1" Margin="0,0,12,48">
+                                    <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap" Foreground="{StaticResource PhoneAccentBrush}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
                                 
-                                <StackPanel Orientation="Horizontal" Margin="12,8,0,0">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,24,0" Opacity="{Binding Comments, Converter={StaticResource CountOpacityConverter}}">
-                                        <Image Source="/Images/comments.white.png" Height="20" />
-                                        <TextBlock Text="{Binding Comments}" Style="{StaticResource PhoneTextSmallStyle}" Margin="6,0,0,0"/>
-                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="12,8,0,0">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,24,0" Opacity="{Binding Comments, Converter={StaticResource CountOpacityConverter}}">
+                                            <Image Source="/Images/comments.white.png" Height="20" />
+                                            <TextBlock Text="{Binding Comments}" Style="{StaticResource PhoneTextSmallStyle}" Margin="6,0,0,0"/>
+                                        </StackPanel>
 
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0" Opacity="{Binding Likes, Converter={StaticResource CountOpacityConverter}}">
-                                        <Image Source="/Images/likes.white.png" Height="20" />
-                                        <TextBlock Text="{Binding Likes}" Style="{StaticResource PhoneTextSmallStyle}" Margin="6,0,0,0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,24,0" Opacity="{Binding Likes, Converter={StaticResource CountOpacityConverter}}">
+                                            <Image Source="/Images/likes.white.png" Height="20" />
+                                            <TextBlock Text="{Binding Likes}" Style="{StaticResource PhoneTextSmallStyle}" Margin="6,0,0,0"/>
+                                        </StackPanel>
+
+                                        <TextBlock Text="{Binding Status}" Style="{StaticResource PhoneTextSmallStyle}" Margin="6,0,0,0"/>
                                     </StackPanel>
-                                    
                                 </StackPanel>
-                            </StackPanel>
-                        </Grid>
+                            </Grid>
+                        </Button>
                     </DataTemplate>
                 </toolkit:LongListSelector.ItemTemplate>
             </toolkit:LongListSelector>
