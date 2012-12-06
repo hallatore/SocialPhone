@@ -45,7 +45,10 @@ namespace SocialPhone.Pages
                 Status = result.Value.message.created_at.ToRelativeDate(),
                 UserAvatarUrl = result.Value.message.user.avatars.square140,
                 Likeable = result.Value.message.likable,
-                LikedByMe = result.Value.message.likes.SingleOrDefault(l => l.user.id == Service.Settings.AuthUser.Id)
+                LikedByMe = result.Value.message.likes.SingleOrDefault(l => l.user.id == Service.Settings.AuthUser.Id),
+                ExternalUrl = result.Value.message.external_url,
+                Attachments = result.Value.message.attachments,
+                MediaFiles = result.Value.message.media_files
             });
 
             foreach (var comment in result.Value.message.comments)
@@ -61,7 +64,9 @@ namespace SocialPhone.Pages
                     UserAvatarUrl = comment.user.avatars.square140,
                     Type = MessageType.Comment,
                     Likeable = comment.likable,
-                    LikedByMe = comment.likes.SingleOrDefault(l => l.user.id == Service.Settings.AuthUser.Id)
+                    LikedByMe = comment.likes.SingleOrDefault(l => l.user.id == Service.Settings.AuthUser.Id),
+                    Attachments = comment.attachments,
+                    MediaFiles = comment.media_files
                 });
             }
 
@@ -71,6 +76,15 @@ namespace SocialPhone.Pages
         private void LikeMenuItemLoaded(object sender, RoutedEventArgs e)
         {
             Helpers.LikeHelper.AttachClickEvent((MenuItem)sender);
+        }
+
+        private void SetupMenuItems(object sender, RoutedEventArgs e)
+        {
+            ContextMenu menu = (ContextMenu)sender;
+            foreach (var item in menu.Items.OfType<MenuItem>().Where(i => i.Header == "Like"))
+            {
+                Helpers.LikeHelper.AttachClickEvent(item);
+            }
         }
     }
 }

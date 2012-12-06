@@ -88,7 +88,10 @@
     <Compile Include="BindingBase.cs" />
     <Compile Include="Converters\CountOpacityConverter.cs" />
     <Compile Include="Helpers\LikeHelper.cs" />
+    <Compile Include="Models\Socialcast\Attachment.cs" />
     <Compile Include="Models\Socialcast\Like.cs" />
+    <Compile Include="Models\Socialcast\MediaFile.cs" />
+    <Compile Include="Models\Socialcast\Thumbnails.cs" />
     <Compile Include="Pages\MessagePage.xaml.cs">
       <DependentUpon>MessagePage.xaml</DependentUpon>
     </Compile>
@@ -98,9 +101,13 @@
     <Compile Include="Models\Socialcast\SocialCastResult.cs" />
     <Compile Include="Models\Socialcast\User.cs" />
     <Compile Include="Services\AuthUser.cs" />
+    <Compile Include="UserControls\AttachmentsList.xaml.cs">
+      <DependentUpon>AttachmentsList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AugmentedAttachment.cs" />
     <Compile Include="ViewModels\Socialcast\Message.cs" />
     <Compile Include="Rest\Result.cs" />
     <Compile Include="Extensions.cs" />
@@ -130,6 +137,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MessagePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AttachmentsList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

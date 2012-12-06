@@ -34,8 +34,7 @@
                     <DataTemplate>
                         <Button Click="MessageClick" Style="{StaticResource TransparentButtonStyle}">
                             <toolkit:ContextMenuService.ContextMenu>
-                                <toolkit:ContextMenu>
-                                    <toolkit:MenuItem Header="like" Loaded="LikeMenuItemLoaded"/>
+                                <toolkit:ContextMenu  x:Name="messageContextMenu" ItemsSource="{Binding MenuItems}" Loaded="SetupMenuItems">
                                 </toolkit:ContextMenu>
                             </toolkit:ContextMenuService.ContextMenu>
                             <Grid>

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace SocialPhone
 {
@@ -57,6 +60,14 @@ namespace SocialPhone
 
             int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
             return years <= 1 ? "1 år siden" : years + " år siden";
+        }
+
+        private static Regex _urlRegex = new Regex("(http[s]?://[^ \r\n]+)");
+        public static IEnumerable<string> ExtractUris(this string value, params string[] extraUrls)
+        {
+
+            return _urlRegex.Matches(value + " ").OfType<Match>().Select(m => m.Value).Union(extraUrls).Where(s => !string.IsNullOrEmpty(s) && s.StartsWith("http"));
+
         }
     }
 }

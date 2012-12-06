@@ -197,11 +197,6 @@ namespace SocialPhone.Pages
             NavigationService.Navigate(new Uri("/Pages/MessagePage.xaml?id=" + message.Id, UriKind.Relative));
         }
 
-        private void LikeMenuItemLoaded(object sender, RoutedEventArgs e)
-        {
-            Helpers.LikeHelper.AttachClickEvent((MenuItem)sender);
-        }
-
 
         private MessageControl messageControl;
 
@@ -225,6 +220,14 @@ namespace SocialPhone.Pages
             messageControl.OnButtonClick += messageControl_OnButtonClick;
             messageControl = null;
             ApplicationBar.IsVisible = true;
+        }
+
+        private void SetupMenuItems(object sender, RoutedEventArgs e)
+        {
+            ContextMenu menu = (ContextMenu)sender;
+            foreach(var item in menu.Items.OfType<MenuItem>().Where(i => i.Header == "Like")) {
+                 Helpers.LikeHelper.AttachClickEvent(item);
+            }
         }
     }
 }

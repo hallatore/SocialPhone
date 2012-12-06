@@ -20,5 +20,8 @@ namespace SocialPhone.Models.Socialcast
         public bool editable { get; set; }
         public bool deletable { get; set; }
         public bool likable { get; set; }
+        public string external_url { get; set; }
+        public List<Attachment> attachments { get; set; }
+        public MediaFile[] media_files { get; set; }
     }
 }

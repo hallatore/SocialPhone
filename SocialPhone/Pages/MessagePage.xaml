@@ -7,6 +7,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:UserControls="clr-namespace:SocialPhone.UserControls"
     xmlns:Pages="clr-namespace:SocialPhone.Pages" xmlns:Converters="clr-namespace:SocialPhone.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -24,8 +25,7 @@
                 <DataTemplate>
                     <Grid>
                         <toolkit:ContextMenuService.ContextMenu>
-                            <toolkit:ContextMenu>
-                                <toolkit:MenuItem Header="like" Loaded="LikeMenuItemLoaded"/>
+                            <toolkit:ContextMenu  x:Name="messageContextMenu" ItemsSource="{Binding MenuItems}" Loaded="SetupMenuItems">
                             </toolkit:ContextMenu>
                         </toolkit:ContextMenuService.ContextMenu>
                         <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
                             <TextBlock Text="{Binding Header}" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap" Foreground="{StaticResource PhoneAccentBrush}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontWeight="SemiBold"/>
                             <TextBlock Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontWeight="SemiBold"/>
                             <TextBlock Text="{Binding Body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
-
+                            <UserControls:AttachmentsList DataContext="{Binding AugmentedAttachments}" />
                             <StackPanel Orientation="Horizontal" Margin="12,8,0,0">
                                 <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
                                     <Image Source="/Images/likes.white.png" Height="20" Opacity="{Binding Likes, Converter={StaticResource CountOpacityConverter}}" Visibility="{StaticResource PhoneDarkThemeVisibility}"/>
