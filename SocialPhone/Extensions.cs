@@ -65,9 +65,12 @@ namespace SocialPhone
         private static Regex _urlRegex = new Regex("(http[s]?://[^ \r\n]+)");
         public static IEnumerable<string> ExtractUris(this string value, params string[] extraUrls)
         {
-
             return _urlRegex.Matches(value + " ").OfType<Match>().Select(m => m.Value).Union(extraUrls).Where(s => !string.IsNullOrEmpty(s) && s.StartsWith("http"));
-
+        }
+        private static Regex _topicRegex = new Regex(@"( |\r|\n|\t)#([a-zA-Z0-9æøåÆØÅ\-]+)");
+        public static IEnumerable<string> ExtractTopics(this string value)
+        {
+            return _topicRegex.Matches(value + " ").OfType<Match>().Select(m => m.Groups[2].Value);
         }
     }
 }

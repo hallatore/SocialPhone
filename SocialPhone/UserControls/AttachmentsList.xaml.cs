@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SocialPhone.ViewModels;
 using Microsoft.Phone.Tasks;
+using SocialPhone.ViewModels.Socialcast;
 
 namespace SocialPhone.UserControls
 {

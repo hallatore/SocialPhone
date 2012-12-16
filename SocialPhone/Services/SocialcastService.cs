@@ -25,6 +25,12 @@ namespace SocialPhone.Services
             return new Rest.Service().GetAsync<SocialCastResult>(string.Format("{0}/api/streams/{1}/messages.json?per_page={2}&page={3}&comments_limit=0", ServiceUrl, streamId, perPage, page), Credentials);
         }
 
+        public Task<Result<SocialCastResult>> GetMessagesByTopicAsync(string topic, int perPage = 10, int page = 1)
+        {
+            return new Rest.Service().GetAsync<SocialCastResult>(string.Format("{0}/api/messages/search.json?q=%23{1}&per_page={2}&page={3}&comments_limit=0", ServiceUrl, topic, perPage, page), Credentials);
+        }
+
+
         public Task<Result<SocialCastResult>> GetMessageAsync(int messageId)
         {
             return new Rest.Service().GetAsync<SocialCastResult>(string.Format("{0}/api/messages/{1}.json", ServiceUrl, messageId), Credentials);

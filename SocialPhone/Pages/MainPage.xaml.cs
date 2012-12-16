@@ -8,6 +8,7 @@ using SocialPhone.Models.Socialcast;
 using SocialPhone.UserControls;
 using SocialPhone.ViewModels;
 using Message = SocialPhone.ViewModels.Socialcast.Message;
+using SocialPhone.Services;
 
 namespace SocialPhone.Pages
 {
@@ -111,7 +112,11 @@ namespace SocialPhone.Pages
                 model.Messages.Clear();
             }
 
-            var result = await Service.Socialcast.GetMessagesAsync(Service.Settings.CurrentStreamId, 5, model.CurrentPage++);
+            var result = await (
+                Service.Settings.StreamMode == StreamMode.Stream
+                ? Service.Socialcast.GetMessagesAsync(Service.Settings.CurrentStreamId, 5, model.CurrentPage++)
+                : Service.Socialcast.GetMessagesByTopicAsync(Service.Settings.CurrentTopic, 5, model.CurrentPage++)
+                );
 
             if (result.HasError())
             {
@@ -167,6 +172,7 @@ namespace SocialPhone.Pages
         {
             Service.Settings.CurrentStreamId = stream.Id;
             Service.Settings.CurrentStreamName = stream.Name;
+            Service.Settings.StreamMode = StreamMode.Stream;
             model.CurrentStreamName = stream.Name;
             model.StreamSelectorVisibility = Visibility.Collapsed;
             await LoadMessages(true);
@@ -227,6 +233,20 @@ namespace SocialPhone.Pages
             ContextMenu menu = (ContextMenu)sender;
             foreach(var item in menu.Items.OfType<MenuItem>().Where(i => i.Header == "Like")) {
                  Helpers.LikeHelper.AttachClickEvent(item);
+            }
+            foreach (var item in menu.Items.OfType<MenuItem>())
+            {
+                if (item.Header.ToString().StartsWith("#"))
+                {
+                    item.Click += (s, re) =>
+                    {
+                        Service.Settings.CurrentTopic = item.Header.ToString().Replace("#", "");
+                        Service.Settings.StreamMode = StreamMode.Topic;
+                        Service.Settings.CurrentStreamName = item.Header.ToString();
+                        model.CurrentStreamName = Service.Settings.CurrentStreamName;
+                        LoadMessages(true);
+                    };
+                }
             }
         }
     }

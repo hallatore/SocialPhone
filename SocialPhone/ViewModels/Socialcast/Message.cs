@@ -48,6 +48,8 @@ namespace SocialPhone.ViewModels.Socialcast
         }
         public IEnumerable<string> Urls { get { return Body.ExtractUris(ExternalUrl); } }
 
+        public IEnumerable<string> Topics { get { return Body.ExtractTopics(); } }
+
         public IEnumerable<MenuItem> MenuItems
         {
             get
@@ -56,7 +58,9 @@ namespace SocialPhone.ViewModels.Socialcast
                 likeItem.IsEnabled = Likeable;
                 likeItem.FontSize = 20;
                 likeItem.Header = "Like";
-                return new List<MenuItem>(new[] { likeItem }).Union(BuildUrlItems(Urls, Attachments));
+                return new List<MenuItem>(new[] { likeItem })
+                    .Union(BuildUrlItems(Urls, Attachments))
+                    .Union(BuildTopicItems(Topics));
             }
         }
 
@@ -64,9 +68,8 @@ namespace SocialPhone.ViewModels.Socialcast
         {
             get
             {
-                return Attachments.Any() ?
-                    "\n" + Attachments
-                           .Select(a => "[Attachment: " + a.filename + "]").Aggregate((s1, s2) => s1 + "\n" + s2)
+                return Attachments != null && Attachments.Any() ?
+                    "\n" + Attachments.Select(a => "[Attachment: " + a.filename + "]").Aggregate((s1, s2) => s1 + "\n" + s2)
                     : "";
             }
         }
@@ -80,10 +83,21 @@ namespace SocialPhone.ViewModels.Socialcast
             }
         }
 
+        public static IEnumerable<MenuItem> BuildTopicItems(IEnumerable<string> topics)
+        {
+            return topics.Select(t => new MenuItem()
+            {
+                FontSize = 20,
+                Header = "#" + t
+            });
+        }
+
         public static IEnumerable<MenuItem> BuildUrlItems(IEnumerable<string> urls, IEnumerable<Attachment> attachments)
         {
             var urlItems = urls.Select(u => WebTask(u, u));
-            var attachmenItems = attachments.Select(a => WebTask(a.public_filename, "Attachment: " + a.filename));
+            var attachmenItems = attachments != null 
+                ? attachments.Select(a => WebTask(a.public_filename, "Attachment: " + a.filename))
+                : new List<MenuItem>();
             return urlItems.Union(attachmenItems);
         }
         private static MenuItem WebTask(String uri, String header)

@@ -107,7 +107,7 @@
     <Compile Include="UserControls\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AugmentedAttachment.cs" />
+    <Compile Include="ViewModels\Socialcast\AugmentedAttachment.cs" />
     <Compile Include="ViewModels\Socialcast\Message.cs" />
     <Compile Include="Rest\Result.cs" />
     <Compile Include="Extensions.cs" />
